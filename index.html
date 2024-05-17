@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0px;
+            padding: 0px;
+        }
+        .rs__circle {
+            position: fixed;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script>
+    // click event
+    document.querySelector("body").addEventListener("click", (e) => {
+        // const circleCoor = [];
+        // const x = e.clientX;
+        // const y = e.clientY;
+        // circleCoor.push({x, y});
+        previousCirclesRemove(1);
+        createCircle(e);
+        let allCircle = document.querySelectorAll(".rs__circle");
+        if(allCircle.length > 1) {
+            let res = logIfIntersecingCircle()
+            console.log("Intersecting => ", res)
+        }
+    })
+    // new circle create
+    const createCircle = (e) => {
+        let myRandom = Math.floor(Math.random() * (200 - 50) + 50);
+        let newCircle = document.createElement("div");
+        newCircle.classList.add("rs__circle");
+        newCircle.style.width = `${myRandom}px`;
+        newCircle.style.height = `${myRandom}px`;
+        newCircle.style.borderRadius = `${myRandom}px`;
+        newCircle.style.top = `${e.clientY - (myRandom/2)}px`;
+        newCircle.style.left = `${e.clientX - (myRandom/2)}px`;
+        document.querySelector("body").appendChild(newCircle);
+    }
+    // previous circle remove
+    const previousCirclesRemove = (e) => {
+        let allCircle = document.querySelectorAll(".rs__circle");
+        if(allCircle.length > e) {
+            Array.from(allCircle).map(item => {
+                item.remove();
+            })
+        }
+    }
+    // circle intersection
+    const circleIntersect = (x0, y0, r0, x1, y1, r1) => {
+        return Math.hypot(x0 - x1, y0 - y1) <= r0 + r1;
+    }
+    // circle intersection log
+    const logIfIntersecingCircle = () => {
+        let allCircle = document.querySelectorAll(".rs__circle");
+        const firstCircle = allCircle[0];
+        const secondCircle = allCircle[1];
+        const x1 = firstCircle.getBoundingClientRect().x;
+        const y1 = firstCircle.getBoundingClientRect().y;
+        const z1 = firstCircle.style;
+        const x2 = secondCircle.getBoundingClientRect().x;
+        const y2 = secondCircle.getBoundingClientRect().y;
+        return circleIntersect(x1, y1, 50, x2, y2, 50);
+    }
+
+
+</script>
+</html>
